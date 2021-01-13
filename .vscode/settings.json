@@ -1,0 +1,21 @@
+{
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "vue"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "less.compile": {
+        "compress": false,
+        "sourceMap": false,
+        "out": false
+    },
+    "minapp-vscode.wxmlFormatter": "prettier",
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "files.eol": "\n"
+}

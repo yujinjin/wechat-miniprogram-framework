@@ -1,0 +1,4 @@
+<view class="page login">
+    登录页
+    <image src="@imgs/32821027.jpg" mode="cover"></image>
+</view>

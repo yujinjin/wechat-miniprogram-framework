@@ -1,0 +1,5 @@
+node_modules
+dist
+src/components/parser-html
+src/components/painter
+*.wxs

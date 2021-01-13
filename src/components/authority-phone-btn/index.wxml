@@ -1,0 +1,4 @@
+<view class="auth-box">
+    <button wx:if="{{!isLogin}}" loading="{{isSumbiting}}" class="auth-button" open-type="getPhoneNumber" bindgetphonenumber="authPhoneNumber"></button>
+    <slot wx:else></slot>
+</view>

@@ -1,0 +1,16 @@
+<van-image
+    src="{{imgUrl}}"
+    fit="{{fit}}"
+    show-menu-by-longpress="{{showMenuByLongpress}}"
+    use-loading-slot="{{useLoadingSlot}}"
+    use-error-slot="{{useErrorSlot}}"
+    lazy-load="{{lazyLoad}}"
+    show-loading="{{showLoading}}"
+    show-error="{{showError}}"
+    custom-class="custom-class img-box"
+    loading-class="loading-class"
+    error-class="error-class error-box"
+>
+    <van-loading slot="loading" type="spinner" size="20" vertical />
+    <image slot="error" src="{{errorImg}}" class="error-img" mode="aspectFit" />
+</van-image>

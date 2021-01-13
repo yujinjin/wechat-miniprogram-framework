@@ -1,0 +1,39 @@
+{
+    "project": "XCX.CI",
+    "appid": "",
+    "type": "miniProgram",
+    "projectPath": "",
+    "privateKeyPath": "",
+    "ignores": [
+        "node_modules/**/*"
+    ],
+    "setting": {
+        "UAT": {
+            "es6": true,
+            "es7": true,
+            "minifyJS": false,
+            "minifyWXML": false,
+            "minifyWXSS": false,
+            "minify": false,
+            "codeProtect": false,
+            "autoPrefixWXSS": true
+        },
+        "PRD": {
+            "es6": true,
+            "es7": true,
+            "minifyJS": true,
+            "minifyWXML": true,
+            "minifyWXSS": true,
+            "minify": true,
+            "codeProtect": false,
+            "autoPrefixWXSS": true
+        }
+    },
+    "list": [
+        {
+            "version": "0.0.1",
+            "desc": "自定义备注",
+            "author": "jackyu"
+        }
+    ]
+}

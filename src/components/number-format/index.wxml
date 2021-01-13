@@ -1,0 +1,4 @@
+<view class="money-box">
+    <text class="symbol-text" wx:if="{{prefix}}">{{prefix}}</text>
+    <text class="money-text">{{moneyValue}}</text>
+</view>

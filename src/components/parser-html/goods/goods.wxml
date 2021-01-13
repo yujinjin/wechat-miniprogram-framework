@@ -1,0 +1,11 @@
+<!--components/parser-html/goods/goods.wxml-->
+<view wx:if="{{ goodsInfo }}" class="m-goods-container" data-goods-id="{{ goodsInfo.id }}" bind:tap="toGoodsDetailsPage">
+    <image class="u-pic" src="{{ goodsInfo.pic }}"></image>
+    <view class="u-content">
+        <view class="u-title">{{ goodsInfo.name }}</view>
+        <view class="u-content-footer">
+            <view class="u-price">¥<view class="u-red">{{ goodsInfo.priceInYuan }}</view></view>
+            <view class="u-btn">去购买</view>
+        </view>
+    </view>
+ </view>

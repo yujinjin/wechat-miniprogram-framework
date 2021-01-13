@@ -1,0 +1,27 @@
+{
+    "pages": [],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "更健康",
+        "navigationBarTextStyle": "black",
+        "pageOrientation": "portrait"
+    },
+    "tabBar": {
+        "color": "#333333",
+        "selectedColor": "#00CC75",
+        "list": []
+    },
+    "usingComponents": {},
+    "sitemapLocation": "sitemap.json",
+    "subpackages": [
+        {
+            "root": "pages/subpackages/others",
+            "name": "subpackages-others",
+            "pages": [],
+            "independent": false
+        }
+    ],
+    "preloadRule": {},
+    "plugins": {}
+}

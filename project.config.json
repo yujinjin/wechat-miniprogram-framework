@@ -1,0 +1,79 @@
+{
+    "description": "微信小程序框架",
+    "miniprogramRoot": "dist/",
+    "compileType": "miniprogram",
+    "libVersion": "2.12.1",
+    "projectname": "wechat-miniprogram-framework",
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "enhance": true,
+        "postcss": true,
+        "preloadBackgroundData": false,
+        "minified": true,
+        "newFeature": true,
+        "coverView": true,
+        "nodeModules": true,
+        "autoAudits": false,
+        "showShadowRootInWxmlPanel": false,
+        "scopeDataCheck": false,
+        "uglifyFileName": false,
+        "checkInvalidKey": true,
+        "checkSiteMap": false,
+        "uploadWithSourceMap": true,
+        "compileHotReLoad": false,
+        "useMultiFrameRuntime": false,
+        "useApiHook": true,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        },
+        "enableEngineNative": false,
+        "bundle": true,
+        "useIsolateContext": true,
+        "useCompilerModule": false,
+        "userConfirmedUseCompilerModuleSwitch": true,
+        "packNpmManually": false,
+        "packNpmRelationList": [],
+        "minifyWXSS": true
+    },
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "appid": "wxa5845fc1d9b9558b",
+    "watchOptions": {
+        "ignore": [
+            "node_modules",
+            "dist/node_modules/**/**",
+            "src/**/**",
+            "key/**/**",
+            "build/**/**"
+        ]
+    },
+    "packOptions": {
+        "ignore": [
+            {
+                "type": "folder",
+                "value": "node_modules"
+            },
+            {
+                "type": "regexp",
+                "value": "\\.ts$"
+            }
+        ]
+    },
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": []
+        }
+    }
+}
