@@ -1,16 +1,12 @@
 {
-    "eslint.validate": [
-        "javascript",
-        "typescript",
-        "vue"
-    ],
+    "eslint.validate": ["javascript", "typescript", "vue"],
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
     "less.compile": {
-        "compress": false,
+        "compress": true,
         "sourceMap": false,
-        "out": false
+        "out": true
     },
     "minapp-vscode.wxmlFormatter": "prettier",
     "javascript.format.insertSpaceBeforeFunctionParenthesis": false,

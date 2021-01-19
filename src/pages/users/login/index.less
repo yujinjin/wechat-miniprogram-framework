@@ -1,0 +1,159 @@
+.login {
+    background-color: #fff;
+    // padding: 184rpx 36rpx 0rpx 36rpx;
+
+    .auth-panel {
+        padding-top: 184rpx;
+
+        image {
+            width: 250rpx;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .tips {
+            width: 288px;
+            height: 44px;
+            margin: 27px auto 50px;
+            font-size: 16px;
+            color: #999999;
+            line-height: 22px;
+            text-align: center;
+        }
+
+        .auth-button {
+            margin: 100rpx 40rpx 0;
+            background-color: #00CC75;
+            color: #fff;
+        }
+    }
+
+    .login-panel {
+        padding: 100rpx 36rpx 36rpx;
+
+        .row-input {
+            border-radius: 20rpx;
+            border: 2rpx solid #d8d8d8;
+            margin-bottom: 40rpx;
+            background-color: #f8f8f8;
+            display: flex;
+            flex-direction: row;
+            padding: 10rpx 0rpx;
+            line-height: 80rpx;
+
+            .label-text {
+                width: 180rpx;
+                text-align: center;
+                font-size: 30rpx;
+                color: #333333;
+                font-weight: 600;
+
+                .icon-fill {
+                    display: inline-flex;
+                    text-align: center;
+                    width: 10px;
+                    color: red;
+                    align-items: baseline;
+                }
+            }
+
+            input {
+                flex: 1;
+                height: 80rpx;
+                font-size: 34rpx;
+                font-weight: 500;
+                padding: 0rpx 10rpx 0 0rpx;
+            }
+
+            .input-placeholder {
+                font-size: 28rpx;
+            }
+
+            .validate-code-text {
+                width: 200rpx;
+                text-align: center;
+                font-size: 30rpx;
+                color: #00CC75;
+                font-weight: 500;
+            }
+        }
+
+        .voice-tips-text {
+            text-align: right;
+            color: #00CC75;
+            opacity: 0.5;
+            padding: 10rpx 0rpx;
+
+            &.actived {
+                opacity: 1;
+            }
+        }
+
+        .check-input {
+            display: flex;
+            flex-direction: row;
+            font-size: 30rpx;
+            line-height: 50rpx;
+            padding: 20rpx 0rpx;
+            align-items: center;
+            color: #999999;
+            font-weight: 400;
+
+            checkbox {
+                transform: scale(0.7);
+            }
+
+            .href-tag {
+                color: #6c9af1;
+                padding-left: 6rpx;
+            }
+        }
+
+        .button-panel {
+            .btn-submit {
+                margin-top: 30rpx;
+                /* height: 80rpx; */
+                line-height: 100rpx;
+                text-align: center;
+                color: #fff;
+                border-radius: 8rpx;
+                background-color: #00CC75;
+                font-size: 34rpx;
+
+                &.disabled {
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        .foot-panel {
+            text-align: center;
+            padding-top: 30px;
+
+            .icon-box {
+                font-size: 12px;
+                display: inline-block;
+                position: relative;
+
+                .btn-authority {
+                    position: absolute;
+                    top: 0rpx;
+                    bottom: 0rpx;
+                    left: 0rpx;
+                    right: 0rpx;
+                    opacity: 0;
+                }
+
+                image {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                .label-text {
+                    line-height: 25px;
+                    color: #666666;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "",
+    "usingComponents": {
+        "parser-html": "/components/parser-html/parser"
+    }
+}

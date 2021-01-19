@@ -73,7 +73,7 @@ export default (function () {
             let _site_local_storage = localStorage.getSiteLocalStorage();
             if (value !== null && typeof value != "undefined") {
                 _site_local_storage[key] = value;
-            } else if (key in _site_local_storage || _site_local_storage.hasOwnProperty(key)) {
+            } else if (key in _site_local_storage || Object.prototype.hasOwnProperty.call(_site_local_storage, key)) {
                 delete _site_local_storage[key];
             }
             return wxStorage.setStorage(wxStorage.LOCAL_STORAGE_KEY.SITE, JSON.stringify(_site_local_storage));

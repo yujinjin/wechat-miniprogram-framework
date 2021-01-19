@@ -43,18 +43,5 @@ export default (function () {
     }
     // 初始化环境配置
     Object.assign(config, envConfig);
-    // TODO: 配置
-    let systemInfo = wx.getSystemInfoSync();
-    // TODO：初始化配置
-    config.device.version = systemInfo.version;
-    config.device.systemVersion = systemInfo.system;
-    config.device.SDKVersion = systemInfo.SDKVersion;
-    config.device.brand = systemInfo.brand;
-    config.device.model = systemInfo.model;
-    if (systemInfo.system.indexOf("iOS") != -1) {
-        config.device.isIOSDevice = true;
-    } else if (systemInfo.system.indexOf("Android") != -1) {
-        config.device.isAndroidDevice = true;
-    }
     return config;
 })();

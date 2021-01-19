@@ -1,0 +1,15 @@
+<view class="page entry-page">
+    <view class="loading-box">
+        <view class="loading loader">
+            <view class="logo">
+                <image mode="widthFix" class="u-logo" src="https://miniappsource.oss-cn-shanghai.aliyuncs.com/724-shopping/cb23103b599ab184588a0be99cb7927b.gif" />
+            </view>
+        </view>
+        <view class="loading-tip">
+            正在加载
+            <view class="dots">
+                <view class="dots-inner">...</view>
+            </view>
+        </view>
+    </view>
+</view>

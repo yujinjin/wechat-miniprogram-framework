@@ -12,6 +12,7 @@ const context = process.cwd();
 // keyPath: 微信小程序上传私钥的相对目录
 module.exports = function (uploadConfigPath, esConfigPath, keyPath, projectConfigPath, target) {
     return async function () {
+        console.info("重新配置微信小程序上传的配置文件...");
         return gulp
             .src(uploadConfigPath)
             .pipe(
@@ -23,6 +24,10 @@ module.exports = function (uploadConfigPath, esConfigPath, keyPath, projectConfi
                     const projectConfig = require(projectConfigPath);
                     // 获取appid
                     json.appid = config.appId;
+                    if (projectConfig.miniprogramRoot) {
+                        json.packageJsonPath = path.join(context, "/package.json");
+                        json.miniprogramNpmDistDir = path.join(context, projectConfig.miniprogramRoot);
+                    }
                     // 获取当前项目编译路径
                     json.projectPath = path.join(context, projectConfig.miniprogramRoot);
                     // 获取当前项目私钥的路径(私钥文件名称规则：private.{config.appId}.key)
@@ -33,7 +38,6 @@ module.exports = function (uploadConfigPath, esConfigPath, keyPath, projectConfi
                         setting = Object.assign(setting, json.setting[config.env]);
                     }
                     json.setting = setting;
-                    console.info("重新配置微信小程序上传的配置文件...");
                     return json;
                 })
             )

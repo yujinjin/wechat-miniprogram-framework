@@ -4,6 +4,8 @@
     "type": "miniProgram",
     "projectPath": "",
     "privateKeyPath": "",
+    "packageJsonPath": "",
+    "miniprogramNpmDistDir": "",
     "ignores": [
         "node_modules/**/*"
     ],

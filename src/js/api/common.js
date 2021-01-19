@@ -40,5 +40,31 @@ export default {
                 ajaxOptions || {}
             )
         );
+    },
+
+    // 获取url参数
+    getValueById(inputData, ajaxOptions) {
+        return request(
+            Object.assign(
+                {
+                    url: "api/DataVaue/GetValueById",
+                    data: inputData
+                },
+                ajaxOptions || {}
+            )
+        );
+    },
+
+    // 更换本地旧token
+    exchangeTokenApi(inputData, ajaxOptions) {
+        return request(
+            Object.assign(
+                {
+                    url: "api/Account/ExchangeToken",
+                    data: inputData
+                },
+                ajaxOptions || {}
+            )
+        );
     }
 };

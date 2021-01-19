@@ -1,4 +1,1 @@
-<view class="page help">
-    帮助页
-    <image src="@imgs/32821027.jpg" mode="cover"></image>
-</view>
+<view class="page help"> 帮助页 </view>

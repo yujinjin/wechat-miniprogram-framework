@@ -1,0 +1,53 @@
+<view class="page login">
+    <!-- 微信授权 -->
+    <view class="auth-panel" wx:if="{{isNeedAuthorization}}">
+        <image mode="widthFix" src="/imgs/logo.png" />
+        <view class="tips">为了更好的为您服务，我们需要获取您最基本的用户信息，请授权给我们！</view>
+        <button loading="{{isSumbiting}}" class="auth-button" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="authUser">同意授权</button>
+    </view>
+    <!-- 微信注册登录 -->
+    <view class="login-panel" wx:if="{{isNeedLogin}}">
+        <view class="row-input">
+            <view class="label-text">
+                手机号
+                <view class="icon-fill">*</view>
+            </view>
+            <input data-name="phoneNumber" data-type="number" type="number" bindinput="inputChange" class="form-control" placeholder="请填写手机号" maxlength="11" />
+        </view>
+        <view class="row-input">
+            <view class="label-text">
+                验证码
+                <view class="icon-fill">*</view>
+            </view>
+            <input data-name="validateCode" data-type="number" type="number" bindinput="inputChange" class="form-control" placeholder="输入验证码" maxlength="4" />
+            <view class="validate-code-text" data-send-type="0" bind:tap="sendValidateCode">
+                {{countDownSecond == -1 ? '获取验证码' : (countDownSecond > 0 ? (countDownSecond + 's') : '重发验证码')}}
+            </view>
+        </view>
+        <!-- <view class="row-input">
+            <view class="label-text">邀请码</view>
+            <input data-name="inviteCode" disabled="{{isHasInviteCode}}" value="{{isHasInviteCode ? inviteCode : ''}}" type="text" bindinput="inputChange" class="form-control" placeholder="邀请码或邀请人的手机号" maxlength="11" />
+        </view> -->
+        <view class="voice-tips-text {{countDownSecond > 0 ? '' : 'actived'}}" data-send-type="1">
+            <text bind:tap="sendValidateCode">收不到短信验证码？</text>
+        </view>
+        <view class="check-input">
+            <checkbox-group bindchange="agreementCheckboxChange">
+                <checkbox value="true" checked="{{agreementChecked}}" />
+            </checkbox-group>
+            <view class="agreement-text">我已阅读并同意</view>
+            <view class="href-tag" data-type="user-agreements" bind:tap="gotoAgreementsPage">更健康用户协议、</view>
+            <view class="href-tag" data-type="privacy-policy" bind:tap="gotoAgreementsPage">隐私权政策</view>
+        </view>
+        <view class="button-panel">
+            <button loading="{{isSumbiting}}" class="btn-submit {{isAllowSubmit ? '' : 'disabled'}}" bind:tap="submit">确定</button>
+        </view>
+        <view class="foot-panel">
+            <view class="icon-box">
+                <button class="btn-authority" open-type="getPhoneNumber" bindgetphonenumber="authPhoneNumber"></button>
+                <image src="/imgs/wx-login.png" />
+                <view class="label-text">微信手机号授权</view>
+            </view>
+        </view>
+    </view>
+</view>

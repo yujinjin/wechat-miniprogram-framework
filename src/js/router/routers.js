@@ -39,4 +39,4 @@ import other from "./other.js";
 import tabBar from "./tab-bar.js";
 
 // 当前项目的页面列表
-export default [...user, ...other, ...tabBar];
+export default [...tabBar, ...user, ...other];

@@ -1,0 +1,3 @@
+<view class="page contents">
+    <parser-html wx:if="{{ content }}" html="{{ content }}" />
+</view>

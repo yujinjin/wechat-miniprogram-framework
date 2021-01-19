@@ -1,5 +1,4 @@
-{  
-	"navigationBarTitleText": "首页",
-	"component": true,
-	"usingComponents": {}
+{
+    "navigationBarTitleText": "首页",
+    "usingComponents": {}
 }

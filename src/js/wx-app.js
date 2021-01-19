@@ -2,9 +2,9 @@ import api from "./api/index.js";
 import localStorage from "./services/local-storage.js";
 import utils from "./utils/utils.js";
 import constant from "./services/constant.js";
-import data from "./services/app-data";
+import data from "./services/data";
 import config from "./config/index.js";
-import router from "./routers/index.js";
+import router from "./router/index.js";
 import events from "./services/events";
 import update from "./services/update";
 import { autoLogin } from "./services/login";
@@ -21,6 +21,19 @@ export default {
     events,
     dataReport,
     async init(options) {
+        // 初始化设备配置
+        let systemInfo = wx.getSystemInfoSync();
+        // TODO：初始化配置
+        config.device.version = systemInfo.version;
+        config.device.systemVersion = systemInfo.system;
+        config.device.SDKVersion = systemInfo.SDKVersion;
+        config.device.brand = systemInfo.brand;
+        config.device.model = systemInfo.model;
+        if (systemInfo.system.indexOf("iOS") != -1) {
+            config.device.isIOSDevice = true;
+        } else if (systemInfo.system.indexOf("Android") != -1) {
+            config.device.isAndroidDevice = true;
+        }
         // 初始化本地用户存储信息
         let loginUserInfo = localStorage.getLoginUserInfo();
         if (loginUserInfo.token) {
@@ -41,7 +54,7 @@ export default {
             localStorage.setShareReferralCode(icd);
         }
         // 查询小程序是否开启强制更新状态
-        api.advisory
+        api.others
             .queryMiniappUpgradeSwitch({
                 appVersionNo: config.innerVersion,
                 appVersionType: 5
@@ -53,7 +66,7 @@ export default {
                 update(data.appVersion.isMust);
             });
         let route = router.getCurrentRoute();
-        if (route && route.name != "index" && !this.isLogin()) {
+        if (route && route.name != "entrance" && !this.isLogin()) {
             await autoLogin(true);
             if (this.isLogin()) {
                 wx.showModal({
@@ -73,7 +86,6 @@ export default {
             }
         }
         dataReport.init(options);
-        setTimeout(api.common.openReporting, 2000);
     },
     // 当前openAuth授权是否过期
     isExpireOpenAuth() {

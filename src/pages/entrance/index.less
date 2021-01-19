@@ -1,0 +1,72 @@
+.entry-page {
+    background-color: #fff;
+    height: 100%;
+}
+
+.loading-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100px);
+}
+
+.loading {
+    height: 100px;
+    width: 100px;
+    position: relative;
+}
+
+.loading .logo {
+    width: 100px;
+    height: 100px;
+}
+
+.loading .logo .u-logo {
+    width: 100%;
+    height: 100%;
+}
+
+.entry-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.entry-page .loading-tip {
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+}
+
+@keyframes dot {
+    0% {
+        width: 0;
+    }
+
+    33% {
+        width: 33%;
+    }
+
+    66% {
+        width: 66%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.entry-page .loading-tip .dots {
+    display: inline-block;
+    width: 24rpx;
+    vertical-align: middle;
+}
+
+.entry-page .loading-tip .dots .dots-inner {
+    width: 0;
+    overflow: hidden;
+    animation: dot 1.2s infinite;
+    will-change: width;
+}

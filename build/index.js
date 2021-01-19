@@ -72,7 +72,8 @@ const tasks = [
     require("./task/app-json")(appJsonPath, esRouterPath, context, target),
     require("./task/update-project-config")(projectConfigPath, esConfigPath),
     require("./task/alias-replace")([`${target}/**/*.{js,wxml,txt}`, `!${target}/tempjs/**`, `!${target}/${gulpConfig.jsDir}/**/*.js`].concat(excludes), gulpConfig.aliasConfig, target),
-    require("./task/eslint")([`${target}/**/*.js`, `!${target}/tempjs/**/*.js`].concat(excludes), target)
+    require("./task/eslint")([`${target}/**/*.js`, `!${target}/tempjs/**/*.js`].concat(excludes), target),
+    require("./task/upload")(uploadConfigPath, options)
 ];
 
 if (options.mode !== "0") {

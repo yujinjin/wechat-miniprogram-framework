@@ -12,5 +12,23 @@ export default [
         app: {
             packageName: "subpackages-others"
         }
+    },
+    {
+        path: "/pages/others/contents/index",
+        name: "contents",
+        title: "内容页",
+        authType: 0,
+        app: {
+            packageName: "subpackages-others"
+        }
+    },
+    {
+        path: "/pages/others/web-view/index",
+        name: "web-view",
+        title: "web页面展示",
+        authType: 0,
+        app: {
+            packageName: "subpackages-others"
+        }
     }
 ];

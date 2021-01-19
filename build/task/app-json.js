@@ -14,11 +14,21 @@ const path = require("path");
 const decache = require("decache");
 
 module.exports = function (appJsonPath, routerPath, context, src) {
+    console.info("开始生成小程序页面配置JSON");
     return function () {
         return gulp
             .src(appJsonPath)
             .pipe(
                 jeditor((json) => {
+                    // 初始化app.json页面路径
+                    json.pages = [];
+                    json.tabBar.list = [];
+                    if (json.subpackages && json.subpackages.length > 0) {
+                        for (let i = 0; i < json.subpackages.length; i++) {
+                            json.subpackages[i].pages = [];
+                        }
+                    }
+                    json.tabBar.list = [];
                     // 清理文件引入缓存，因为文件有变化时，引入的文件数据仍是修改前的数据
                     decache(routerPath);
                     const routers = require(routerPath).default;
@@ -29,8 +39,8 @@ module.exports = function (appJsonPath, routerPath, context, src) {
                         if (root) {
                             if (pagePath.startsWith(root + "/")) {
                                 pagePath = pagePath.substr(root.length + 1);
-                            } else {
-                                // 移动文件
+                            } else if (fs.pathExistsSync(path.join(context, src + "/" + pagePath.substr(0, pagePath.lastIndexOf("/"))))) {
+                                // 如果需要迁移的目录文件还存在就去移动文件（不存在的原因可能是因为当前是watch模式）
                                 let pageDir = path.join(context, src + "/" + root + "/" + pagePath.substr(0, pagePath.lastIndexOf("/")));
                                 if (!fs.pathExistsSync(pageDir)) {
                                     fs.mkdirsSync(pageDir);

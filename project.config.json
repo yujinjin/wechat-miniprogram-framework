@@ -22,45 +22,41 @@
         "checkSiteMap": false,
         "uploadWithSourceMap": true,
         "compileHotReLoad": false,
-        "useMultiFrameRuntime": false,
+        "useMultiFrameRuntime": true,
         "useApiHook": true,
+        "useApiHostProcess": true,
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
             "outputPath": ""
         },
         "enableEngineNative": false,
-        "bundle": true,
+        "bundle": false,
         "useIsolateContext": true,
         "useCompilerModule": false,
         "userConfirmedUseCompilerModuleSwitch": true,
-        "packNpmManually": false,
-        "packNpmRelationList": [],
+        "userConfirmedBundleSwitch": false,
+        "packNpmManually": true,
+        "packNpmRelationList": [{
+            "packageJsonPath": "./package.json",
+            "miniprogramNpmDistDir": "./dist/"
+        }],
         "minifyWXSS": true
     },
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
     "appid": "wxa5845fc1d9b9558b",
     "watchOptions": {
-        "ignore": [
-            "node_modules",
-            "dist/node_modules/**/**",
-            "src/**/**",
-            "key/**/**",
-            "build/**/**"
-        ]
+        "ignore": ["node_modules", "dist/node_modules/**/**", "src/**/**", "key/**/**", "build/**/**"]
     },
     "packOptions": {
-        "ignore": [
-            {
-                "type": "folder",
-                "value": "node_modules"
-            },
-            {
-                "type": "regexp",
-                "value": "\\.ts$"
-            }
-        ]
+        "ignore": [{
+            "type": "folder",
+            "value": "node_modules"
+        }, {
+            "type": "regexp",
+            "value": "\\.ts$"
+        }]
     },
     "condition": {
         "plugin": {

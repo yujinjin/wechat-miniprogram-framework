@@ -1,5 +1,4 @@
-{  
-	"navigationBarTitleText": "用户",
-	"component": true,
-	"usingComponents": {}
+{
+    "navigationBarTitleText": "用户",
+    "usingComponents": {}
 }

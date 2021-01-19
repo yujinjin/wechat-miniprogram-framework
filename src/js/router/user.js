@@ -5,7 +5,7 @@
  */
 export default [
     {
-        path: "/pages/login/index",
+        path: "/pages/users/login/index",
         name: "login",
         title: "登录",
         authType: 0
