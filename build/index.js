@@ -70,16 +70,12 @@ const tasks = [
     require("./task/es-transform")(`${target}/${gulpConfig.jsDir}/**/*.js`, `${target}/tempjs`),
     require("./task/update-upload-config")(uploadConfigPath, esConfigPath, "key", projectConfigPath, target),
     require("./task/app-json")(appJsonPath, esRouterPath, context, target),
-    require("./task/update-project-config")(projectConfigPath, esConfigPath),
+    require("./task/update-project-config")(projectConfigPath, esConfigPath, target),
     require("./task/alias-replace")([`${target}/**/*.{js,wxml,txt}`, `!${target}/tempjs/**`, `!${target}/${gulpConfig.jsDir}/**/*.js`].concat(excludes), gulpConfig.aliasConfig, target),
     require("./task/eslint")([`${target}/**/*.js`, `!${target}/tempjs/**/*.js`].concat(excludes), target),
-    require("./task/upload")(uploadConfigPath, options)
+    require("./task/upload")(uploadConfigPath, `${target}/tempjs`, options)
 ];
 
-if (options.mode !== "0") {
-    // TODO: 打包模式
-    // 1: 删除tempjs目录下
-}
 series(tasks)((error) => {
     if (error) {
         console.error(error);

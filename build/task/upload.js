@@ -11,13 +11,6 @@ module.exports = function (uploadConfigPath, options) {
         // 创建项目对象
         decache(uploadConfigPath);
         const uploadConfig = require(uploadConfigPath);
-        const projectInstance = new miniprogramCi.Project({
-            appid: uploadConfig.appid,
-            type: uploadConfig.type,
-            projectPath: uploadConfig.projectPath,
-            privateKeyPath: uploadConfig.privateKeyPath,
-            ignores: uploadConfig.ignores
-        });
         console.info("开始构建NPM");
         if (uploadConfig.packageJsonPath) {
             // 自定义 node_modules 位置的构建 npm
@@ -26,7 +19,15 @@ module.exports = function (uploadConfigPath, options) {
                 miniprogramNpmDistDir: uploadConfig.miniprogramNpmDistDir
             });
             console.log("构建NPM完毕, packResult:", packResult);
-        } else {
+        }
+        const projectInstance = new miniprogramCi.Project({
+            appid: uploadConfig.appid,
+            type: uploadConfig.type,
+            projectPath: uploadConfig.projectPath,
+            privateKeyPath: uploadConfig.privateKeyPath,
+            ignores: uploadConfig.ignores
+        });
+        if (!uploadConfig.packageJsonPath) {
             // 构建npm
             const warning = await miniprogramCi.packNpm(projectInstance, {
                 ignores: ["pack_npm_ignore_list"],
@@ -40,7 +41,7 @@ module.exports = function (uploadConfigPath, options) {
             console.info("开始小程序上传");
             // 开始上传
             const uploadResult = await miniprogramCi.upload({
-                projectInstance,
+                project: projectInstance,
                 version: uploadConfig.list[0].version,
                 desc: uploadConfig.list[0].desc,
                 setting: uploadConfig.setting,

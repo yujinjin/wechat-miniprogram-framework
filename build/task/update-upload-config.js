@@ -29,7 +29,7 @@ module.exports = function (uploadConfigPath, esConfigPath, keyPath, projectConfi
                         json.miniprogramNpmDistDir = path.join(context, projectConfig.miniprogramRoot);
                     }
                     // 获取当前项目编译路径
-                    json.projectPath = path.join(context, projectConfig.miniprogramRoot);
+                    json.projectPath = path.join(context);
                     // 获取当前项目私钥的路径(私钥文件名称规则：private.{config.appId}.key)
                     json.privateKeyPath = path.join(context, `${keyPath}`, `private.${config.appId}.key`);
                     // 获取编译设置
