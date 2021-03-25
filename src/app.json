@@ -13,7 +13,6 @@
         "list": []
     },
     "usingComponents": {},
-    "sitemapLocation": "sitemap.json",
     "subpackages": [
         {
             "root": "pages/subpackages/others",

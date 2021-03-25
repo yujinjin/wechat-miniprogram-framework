@@ -1,4 +1,4 @@
-<view class="page login">
+<page-wrapper page-class="login-page">
     <!-- 微信授权 -->
     <view class="auth-panel" wx:if="{{isNeedAuthorization}}">
         <image mode="widthFix" src="/imgs/logo.png" />
@@ -50,4 +50,4 @@
             </view>
         </view>
     </view>
-</view>
+</page-wrapper>

@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "微信小程序框架",
     "scripts": {
-        "R_UAT": "node ./build/index.js --env uat --mode 0"
+        "R_UAT": "node ./build/index.js --env uat --mode 0",
+        "B_UAT": "node ./build/index.js --env uat --mode 1",
+        "lint": "eslint --fix src/**/*.js"
     },
     "author": "yujinjin9@126.com",
     "dependencies": {

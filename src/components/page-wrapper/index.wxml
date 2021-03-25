@@ -1,0 +1,5 @@
+<view class="page-class page-wrapper">
+    <view class="page-contents">
+        <slot></slot>
+    </view>
+</view>

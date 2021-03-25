@@ -45,7 +45,7 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
                         // 系统配置文件有变化
                         watcherTasks[0] = [require("./update-sys-config")(configPath, uploadConfigPath, options)];
                         watcherTasks[5] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
-                    } else if (configPath.substr(0, filteItem.destFilePath.lastIndexOf("\\")) == filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))) {
+                    } else if (configPath.substr(0, configPath.lastIndexOf("\\")) == filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))) {
                         // 其他环境变量的配置文件变化
                         watcherTasks[5] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
                     } else if (/.(png|jpg|jpeg|svg|gif|ico)$/.test(filteItem.destFilePath)) {
@@ -54,6 +54,11 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
                             watcherTasks[1] = [];
                         }
                         watcherTasks[1].push(require("./image-min")(filteItem.destFilePath, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))));
+                    } else if (filteItem.destFilePath == appJsonPath) {
+                        if (!watcherTasks[4]) {
+                            // 重新生成路由app.json
+                            watcherTasks[4] = [require("./app-json")(appJsonPath, esRouterPath, context, target)];
+                        }
                     } else {
                         if (filteItem.destFilePath.startsWith(path.join(context, `${target}/${gulpConfig.jsDir}/router`)) && /.js$/.test(filteItem.destFilePath)) {
                             // 如果当前JS的路由目录，

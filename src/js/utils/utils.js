@@ -32,7 +32,7 @@ export default {
 
     //验证邮箱
     validateEmail(email) {
-        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        var filter = /^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if (filter.test(email)) {
             return true;
         } else {
@@ -153,7 +153,12 @@ export default {
     },
 
     // 生成图片资源的压缩后缀
-    generateImgSuffix(size = { width: 750 }, timeStamp = true) {
+    generateImgSuffix(
+        size = {
+            width: 750
+        },
+        timeStamp = true
+    ) {
         let width = 750;
         let height = 0;
         if (typeof size == "number") {
@@ -202,23 +207,27 @@ export default {
 
     //日期格式化
     dateFormat(date, fmt = "yyyy-MM-dd") {
-        // TODO: 没有经过测试
         if (!date) {
             return "";
-        } else if (typeof date === "string") {
-            date = new Date(date);
+        } else if (!(date instanceof Date)) {
+            try {
+                date = new Date(date);
+            } catch (error) {
+                console.error("日期格式错误...", date);
+                return "";
+            }
         }
-        var o = {
+        let o = {
             "M+": date.getMonth() + 1, // 月份
             "d+": date.getDate(), // 日
             "h+": date.getHours(), // 小时
             "m+": date.getMinutes(), // 分
             "s+": date.getSeconds(), // 秒
             "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
-            S: date.getMilliseconds() // 毫秒
+            "S+": date.getMilliseconds() // 毫秒
         };
         if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o) if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        for (let k in o) if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
         return fmt;
     },
 
@@ -255,7 +264,7 @@ export default {
      */
     //货币格式化
     numberFormat(num, digit) {
-        num = num.toString().replace(/\$|\,/g, "");
+        num = num.toString().replace(/\$|\\,/g, "");
         if (isNaN(num)) num = "0";
         if (typeof digit != "number" || digit < 0) {
             digit = 0;
@@ -384,7 +393,11 @@ export default {
         }
         if (keyArray.length == 1) {
             object[keyArray[0]] = value;
-            return { rootObject: { [keyArray[0]]: value } };
+            return {
+                rootObject: {
+                    [keyArray[0]]: value
+                }
+            };
         }
         const getValue = function (targetObject, key, isArray) {
             let value = targetObject[key];
@@ -401,7 +414,11 @@ export default {
             targetValue = getValue(targetValue, keyArray[i], /^\d+$/.test(keyArray[i + 1]));
         }
         targetValue[keyArray[keyArray.length - 1]] = value;
-        return { rootObject: { [rootName]: rootValue } };
+        return {
+            rootObject: {
+                [rootName]: rootValue
+            }
+        };
     },
 
     // 根据 object对象的path路径获取值。 如果解析 value 是 undefined 会以 defaultValue 取代。

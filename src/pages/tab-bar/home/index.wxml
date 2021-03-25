@@ -1,3 +1,1 @@
-<view class="page home">
-    首页
-</view>
+<page-wrapper page-class="home-page"> 首页 </page-wrapper>

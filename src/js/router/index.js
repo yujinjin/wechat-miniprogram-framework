@@ -164,6 +164,9 @@ export default {
             return null;
         }
         let currentPage = pages[pages.length - 1];
+        if (!currentPage) {
+            return null;
+        }
         let route = this.getRouteByUrl(currentPage.route);
         if (!route) {
             // throw new Error("健康小程序：未获取到" + currentPage.route + "的路由对象");

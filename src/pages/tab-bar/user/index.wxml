@@ -1,3 +1,1 @@
-<view class="page user">
-    用户页
-</view>
+<page-wrapper page-class="user-page"> 用户页 </page-wrapper>

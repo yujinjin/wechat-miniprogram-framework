@@ -68,10 +68,11 @@ export default {
         let route = router.getCurrentRoute();
         if (route && route.name != "entrance" && !this.isLogin()) {
             await autoLogin(true);
-            if (this.isLogin()) {
+            if (!this.isLogin()) return;
+            if (getCurrentPages().length > 1) {
                 wx.showModal({
                     title: "提示",
-                    content: "系统检测到您现在已经是登录，是否要重新进入?",
+                    content: "系统检测到您现在已经是登录状态，是否要重新进入?",
                     success: (res) => {
                         if (res.cancel) {
                             return;
@@ -83,6 +84,12 @@ export default {
                         }
                     }
                 });
+            } else {
+                if (route.isNavigationPage) {
+                    router.reLaunch(route);
+                } else {
+                    router.replace(route);
+                }
             }
         }
         dataReport.init(options);

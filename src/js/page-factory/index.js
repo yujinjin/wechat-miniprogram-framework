@@ -66,10 +66,21 @@ export default function (page) {
 
             // 小程序分享
             onShareAppMessage(data) {
-                let shareInfo = this.getDefaultShareAppMessageInfo();
+                let shareInfo = this.getDefaultShareInfo();
                 if (page.onShareAppMessage && page.onShareAppMessage.call(this, data)) {
                     shareInfo = Object.assign({}, shareInfo, page.onShareAppMessage.call(this, data));
                 }
+                wxApp.dataReport.shareAppMessageEventReport(data, shareInfo);
+                return shareInfo;
+            },
+
+            // 分享朋友圈
+            onShareTimeline() {
+                let shareInfo = this.getDefaultShareTimelineInfo();
+                if (page.onShareTimeline && page.onShareTimeline.call(this)) {
+                    shareInfo = Object.assign({}, shareInfo, page.onShareTimeline.call(this));
+                }
+                wxApp.dataReport.shareTimelineEventReport(shareInfo);
                 return shareInfo;
             },
 

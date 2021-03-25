@@ -1,1 +1,1 @@
-<view class="page help"> 帮助页 </view>
+<page-wrapper page-class="help-page"> 帮助页 </page-wrapper>

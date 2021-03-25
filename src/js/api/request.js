@@ -22,7 +22,7 @@ export default (function () {
         let _default = {
             header: {
                 "Abplus-ClientVersion": config.innerVersion,
-                Authorization: token,
+                ["Authorization"]: token,
                 "Abplus-SysCode": config.apiPlatform
             },
             // 是否显示loading加载

@@ -149,6 +149,34 @@ export default (function () {
                     eventParameters: eventParameters && JSON.stringify(eventParameters) != "{}" ? JSON.stringify(eventParameters) : undefined
                 }
             ]);
+        },
+        // 分享到微信好友事件数据上报
+        shareAppMessageEventReport({ from }, { title, path, imageUrl }) {
+            console.info({
+                time: new Date().getTime(),
+                eventType: "onClick",
+                eventValue: "wxMinProgramAppMessageForShare",
+                eventParameters: JSON.stringify({ title, img: imageUrl, url: path, wxAppOriginalId: "gh_a76b8b7871ec", from })
+            });
+            conroller.push([
+                {
+                    time: new Date().getTime(),
+                    eventType: "onClick",
+                    eventValue: "wxMinProgramAppMessageForShare",
+                    eventParameters: JSON.stringify({ title, img: imageUrl, url: path, wxAppOriginalId: "", from })
+                }
+            ]);
+        },
+        // 分享到微信朋友圈事件数据上报
+        shareTimelineEventReport(shareInfo) {
+            conroller.push([
+                {
+                    time: new Date().getTime(),
+                    eventType: "onClick",
+                    eventValue: "wxMinProgramTimelineForShare",
+                    eventParameters: JSON.stringify(shareInfo)
+                }
+            ]);
         }
     };
 })();
