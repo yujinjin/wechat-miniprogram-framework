@@ -4,13 +4,15 @@
  * 描述：uat 环境配置文件
  */
 module.exports = {
+    //当前环境
+    env: "UAT",
     //API接口地址
     apiDomain: "https://wxuat.betterhealth.cn/",
     // 获取健康管理师
-    // apiHealth: "https://healthuat.betterhealth.cn/",
-    // webViewQuestionnaireDomain: "http://172.31.1.207:8080/questionnaire",
     //OpenAuth站点API地址
     openAuthApiDomain: "https://openauth.betterhealth.cn/",
+    // passportAuth站点API地址
+    passportAuthApiDomain: "https://passportuat.betterhealth.cn/",
     //图片上传服务
     uploadImgServer: "https://resource.betterhealth.cn/Uploader/UploadImage",
     //获取资源服务器地址

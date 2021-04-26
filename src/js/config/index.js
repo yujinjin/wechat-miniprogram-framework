@@ -7,7 +7,7 @@
 export default (function () {
     let config = {
         releaseTime: "", // 发布时间
-        tokenVersion: "1.0.4", // 当前项目的token版本号，其实每次发版的时候并不会改这个版本号，它主要用于本地存储信息的判断，需要用的时候再改就行了
+        tokenVersion: "1.1.0", // 当前项目的token版本号，其实每次发版的时候并不会改这个版本号，它主要用于本地存储信息的判断，需要用的时候再改就行了
         isDebug: true, // 是否是前端调试状态
         innerVersion: "1.7.6", // 获得当前终端的版本号
         platform: "miniprogram", // 当前系统平台 H5,Android,IOS
@@ -16,6 +16,7 @@ export default (function () {
         env: "UAT", // 当前环境
         apiDomain: "", // API接口地址
         openAuthApiDomain: "", // OpenAuth站点API地址
+        passportAuthApiDomain: "", // passport站点API地址
         uploadImgServer: "", //图片上传服务
         imageDomain: "", //获取资源服务器地址
         clientId: "", // 客户端ID

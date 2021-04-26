@@ -34,14 +34,42 @@ export default {
         } else if (systemInfo.system.indexOf("Android") != -1) {
             config.device.isAndroidDevice = true;
         }
+        data.startScene = options.scene;
         // 初始化本地用户存储信息
-        let loginUserInfo = localStorage.getLoginUserInfo();
-        if (loginUserInfo.token) {
+        const loginUserInfo = localStorage.getLoginUserInfo();
+        if (loginUserInfo.accessToken) {
             data.userInfo.userId = loginUserInfo.userId;
-            data.userInfo.token = loginUserInfo.token;
+            data.userInfo.accessToken = loginUserInfo.accessToken;
+            data.userInfo.refreshToken = loginUserInfo.refreshToken;
+            data.userInfo.tokenType = loginUserInfo.tokenType;
+            data.userInfo.refreshTime = loginUserInfo.refreshTime;
             data.userInfo.expiredTime = loginUserInfo.expiredTime;
             data.userInfo.referralCode = loginUserInfo.referralCode;
         }
+        // 同时执行的并发标志
+        let isRefreshing = false;
+        // 刷新token事件
+        events.on("refreshLoginToken", function () {
+            if (isRefreshing) {
+                return;
+            }
+            isRefreshing = true;
+            const currentLoginUserInfo = localStorage.getLoginUserInfo();
+            const refreshToken = currentLoginUserInfo.refreshToken;
+            if (!refreshToken) {
+                return;
+            }
+            api.authority.refreshUserToken({ refreshToken: currentLoginUserInfo.refreshToken }, { isShowError: false }).then((data) => {
+                localStorage.setLoginUserInfo({
+                    accessToken: data.accessToken,
+                    expiresIn: data.expiresIn,
+                    refreshToken: data.refreshToken,
+                    tokenType: data.tokenType,
+                    referralCode: currentLoginUserInfo.referralCode,
+                    userId: currentLoginUserInfo.userId
+                });
+            });
+        });
     },
 
     async start(options) {
@@ -66,7 +94,7 @@ export default {
                 update(data.appVersion.isMust);
             });
         let route = router.getCurrentRoute();
-        if (route && route.name != "entrance" && !this.isLogin()) {
+        if (route && route.name != "index" && !this.isLogin()) {
             await autoLogin(true);
             if (!this.isLogin()) return;
             if (getCurrentPages().length > 1) {
@@ -106,16 +134,21 @@ export default {
         return true;
     },
     isLogin() {
-        if (data.userInfo.expiredTime) {
-            // 由于前端提前了12个小时设置过期时间，所以暂不考虑data.userInfo.expiredTime > new Date().getTime()
+        const currentTime = new Date().getTime();
+        if (data.userInfo.expiredTime > currentTime) {
+            if (data.userInfo.refreshTime && data.userInfo.refreshTime < currentTime) {
+                events.trigger("refreshLoginToken");
+            }
             return true;
         }
         return false;
     },
     getUserToken() {
-        if (data.userInfo.expiredTime) {
-            // 由于前端提前了12个小时设置过期时间，所以暂不考虑data.userInfo.expiredTime > new Date().getTime()
-            return data.userInfo.token;
+        if (this.isLogin()) {
+            if (data.userInfo.tokenType) {
+                return data.userInfo.tokenType + " " + data.userInfo.accessToken;
+            }
+            return data.userInfo.accessToken || data.userInfo.token;
         }
         return null;
     },

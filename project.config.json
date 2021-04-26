@@ -37,38 +37,26 @@
         "userConfirmedUseCompilerModuleSwitch": true,
         "userConfirmedBundleSwitch": false,
         "packNpmManually": true,
-        "packNpmRelationList": [
-            {
-                "packageJsonPath": "./package.json",
-                "miniprogramNpmDistDir": "/dist/"
-            }
-        ],
+        "packNpmRelationList": [{
+            "packageJsonPath": "./package.json",
+            "miniprogramNpmDistDir": "/dist/"
+        }],
         "minifyWXSS": true
     },
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
     "appid": "wxa5845fc1d9b9558b",
     "watchOptions": {
-        "ignore": [
-            "node_modules",
-            "dist/node_modules/**/**",
-            "src/**/**",
-            "key/**/**",
-            "build/**/**",
-            "dist/tempjs/**/**"
-        ]
+        "ignore": ["node_modules", "dist/node_modules/**/**", "src/**/**", "key/**/**", "build/**/**", "dist/tempjs/**/**"]
     },
     "packOptions": {
-        "ignore": [
-            {
-                "type": "folder",
-                "value": "node_modules"
-            },
-            {
-                "type": "regexp",
-                "value": "\\.ts$"
-            }
-        ]
+        "ignore": [{
+            "type": "folder",
+            "value": "node_modules"
+        }, {
+            "type": "regexp",
+            "value": "\\.ts$"
+        }]
     },
     "condition": {
         "plugin": {
@@ -81,14 +69,12 @@
             "list": []
         },
         "miniprogram": {
-            "list": [
-                {
-                    "name": "路由调整",
-                    "pathName": "pages/entrance/index",
-                    "query": "toName=login",
-                    "scene": null
-                }
-            ]
+            "list": [{
+                "name": "路由调整",
+                "pathName": "pages/index/index",
+                "query": "toName=login",
+                "scene": null
+            }]
         }
     }
 }

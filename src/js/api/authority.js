@@ -41,7 +41,7 @@ export default {
         return request(
             Object.assign(
                 {
-                    url: "api/Account/ExternalLogin",
+                    url: config.passportAuthApiDomain + "api/account/login/partner",
                     method: "POST",
                     data: inputData
                 },
@@ -55,7 +55,7 @@ export default {
         return request(
             Object.assign(
                 {
-                    url: "api/Account/ExternalPhoneAuthorize",
+                    url: config.passportAuthApiDomain + "api/account/register/mixed",
                     method: "POST",
                     data: inputData
                 },
@@ -69,9 +69,23 @@ export default {
         return request(
             Object.assign(
                 {
-                    url: "api/Account/AuthenticateByValidateCode",
+                    url: config.passportAuthApiDomain + "api/account/login/sms",
                     method: "POST",
                     data: inputData
+                },
+                ajaxOptions || {}
+            )
+        );
+    },
+
+    // 发送登录注册的验证码
+    sendValidateCodeForLogin({ phoneNumber, scenarioKey }, ajaxOptions) {
+        return request(
+            Object.assign(
+                {
+                    url: config.passportAuthApiDomain + "api/account/ValidateCode",
+                    method: "POST",
+                    data: { phoneNumber, scenarioKey }
                 },
                 ajaxOptions || {}
             )
@@ -84,6 +98,19 @@ export default {
             Object.assign(
                 {
                     url: config.apiDomain + "api/My/UserInfo",
+                    data: inputData
+                },
+                ajaxOptions || {}
+            )
+        );
+    },
+    // 刷新当前登录用户token信息
+    refreshUserToken(inputData, ajaxOptions) {
+        return request(
+            Object.assign(
+                {
+                    url: config.passportAuthApiDomain + "api/account/login/refresh",
+                    method: "POST",
                     data: inputData
                 },
                 ajaxOptions || {}

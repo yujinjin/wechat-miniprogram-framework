@@ -49,10 +49,10 @@ Component({
                     encryptedData: wxApp.data.openAuth.encryptedData,
                     iv: wxApp.data.openAuth.iv,
                     referralCode: wxApp.data.shareReferralCode,
-                    channelCode: this.data.channelCode
+                    channelCode: wxApp.data.fromChannelCode + "|" + (wxApp.data.fromSceneCode || this.data.channelCode)
                 });
                 this.setData({ isSumbiting: false });
-                await wxApp.localStorage.setLoginUserInfo({ token: result.authToken, expiredTime: result.expiredIn });
+                await wxApp.localStorage.setLoginUserInfo(result);
                 this.triggerEvent("authority", { result: "success" });
             } catch (error) {
                 this.setData({ isSumbiting: false });

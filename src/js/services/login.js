@@ -80,8 +80,8 @@ export async function codeLogin() {
             },
             { isShowError: false }
         );
-        if (authInfo.authToken) {
-            await wxApp.localStorage.setLoginUserInfo({ token: authInfo.authToken, expiredTime: authInfo.expiredIn });
+        if (authInfo.accessToken) {
+            await wxApp.localStorage.setLoginUserInfo(authInfo);
             return Promise.resolve(true);
         }
     } catch (error) {

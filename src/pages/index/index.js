@@ -4,7 +4,7 @@
  * 站点首页
  */
 import pageFactory from "@js/page-factory/index";
-import tokenReplace from "@js/services/token-replace";
+import tokenReplace from "../../js/services/token-replace";
 import { autoLogin } from "@js/services/login";
 
 pageFactory({

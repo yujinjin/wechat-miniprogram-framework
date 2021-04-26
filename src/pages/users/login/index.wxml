@@ -3,7 +3,8 @@
     <view class="auth-panel" wx:if="{{isNeedAuthorization}}">
         <image mode="widthFix" src="/imgs/logo.png" />
         <view class="tips">为了更好的为您服务，我们需要获取您最基本的用户信息，请授权给我们！</view>
-        <button loading="{{isSumbiting}}" class="auth-button" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="authUser">同意授权</button>
+        <button wx:if="{{canIUseGetUserProfile}}" loading="{{isSumbiting}}" class="auth-button" bindtap="getUserProfileTap">同意授权</button>
+        <button wx:else loading="{{isSumbiting}}" class="auth-button" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="authUser">同意授权</button>
     </view>
     <!-- 微信注册登录 -->
     <view class="login-panel" wx:if="{{isNeedLogin}}">

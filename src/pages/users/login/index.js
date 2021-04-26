@@ -20,7 +20,8 @@ pageFactory({
         countDownSecond: -1, // 倒计时（秒）
         toRoute: {}, // 跳转的路由
         goBack: "", // 跳转转化后的路由
-        inviteCode: "" // 邀请码或手机号
+        inviteCode: "", // 邀请码或手机号
+        canIUseGetUserProfile: !!wx.getUserProfile // 是否可以使用获取头像昵称API
     },
     onLoad: function (options) {
         // 初始化登录成功后需要跳转的路由
@@ -44,7 +45,7 @@ pageFactory({
      * @returns 当前用户是否已经登录
      */
     async init() {
-        if (!this.wxApp.isLogin() && this.wxApp.isExpireOpenAuth()) {
+        if (!this.wxApp.isLogin()) {
             await codeLogin();
         }
         if (this.wxApp.isLogin()) {
@@ -125,7 +126,7 @@ pageFactory({
         this.data.countDownSecond = 60;
         const sendType = e.currentTarget.dataset.sendType;
         return this.wxApp.api.common
-            .sendValidateCode({ sendType, mobile: this.data.phoneNumber })
+            .sendValidateCode({ scenarioKey: "reg", sendType, phoneNumber: this.data.phoneNumber })
             .then(() => {
                 if (sendType == 1) {
                     wx.showModal({ content: "我们将以电话的\r\n方式告知您验证码\r\n请注意接听", title: "语音验证码", showCancel: false });
@@ -163,6 +164,21 @@ pageFactory({
             this.setData({ isSumbiting: false });
         }
     },
+    // 获取当前用户头像信息
+    async getUserProfileTap() {
+        if (this.data.isSumbiting) {
+            wx.showToast({ title: "数据正在提交，请稍后!", icon: "none" });
+            return;
+        }
+        try {
+            const result = await wx.getUserProfile({
+                desc: "用于完善会员资料" // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+            });
+            this.authUser({ detail: { encryptedData: result.encryptedData, iv: result.iv } });
+        } catch (error) {
+            console.info(error);
+        }
+    },
     // 授权手机号
     async authPhoneNumber(e) {
         if (!e.detail.encryptedData) {
@@ -194,10 +210,11 @@ pageFactory({
                 uid: this.wxApp.data.openAuth.uid,
                 encryptedData: this.wxApp.data.openAuth.encryptedData,
                 iv: this.wxApp.data.openAuth.iv,
-                referralCode: this.data.inviteCode
+                referralCode: this.data.inviteCode,
+                channelCode: this.wxApp.data.fromChannelCode + "|" + (this.wxApp.data.fromSceneCode || "default")
             });
             this.setData({ isSumbiting: false });
-            await this.wxApp.localStorage.setLoginUserInfo({ token: result.authToken, expiredTime: result.expiredIn });
+            await this.wxApp.localStorage.setLoginUserInfo(result);
             this.go();
         } catch (error) {
             this.setData({ isSumbiting: false });
@@ -238,15 +255,15 @@ pageFactory({
             const result = await this.wxApp.api.authority.phoneLoginByOpenAuth({
                 clientId: this.wxApp.config.clientId,
                 phoneNumber: this.data.phoneNumber,
-                securityCode: this.data.validateCode,
-                confirmed: false,
+                validateCode: this.data.validateCode,
                 uid: this.wxApp.data.openAuth.uid,
                 encryptedData: this.wxApp.data.openAuth.encryptedData,
                 iv: this.wxApp.data.openAuth.iv,
-                referralCode: this.data.inviteCode
+                referralCode: this.data.inviteCode,
+                channelCode: this.wxApp.data.fromChannelCode + "|" + (this.wxApp.data.fromSceneCode || "default")
             });
             this.setData({ isSumbiting: false });
-            await this.wxApp.localStorage.setLoginUserInfo({ token: result.authToken, expiredTime: result.expiredIn });
+            await this.wxApp.localStorage.setLoginUserInfo(result);
             this.go();
         } catch (error) {
             this.setData({ isSumbiting: false });

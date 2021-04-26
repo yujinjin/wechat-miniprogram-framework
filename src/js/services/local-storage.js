@@ -43,7 +43,12 @@ export default (function () {
             LOGIN_USER_INFO: "loginUserInfo",
             // 别人分享的邀请码
             SHARE_REFERRAL_CODE: "shareReferralCode",
-            DEVICE_ID: "deviceId"
+            // 当前设备ID
+            DEVICE_ID: "deviceId",
+            // 用户进入入口渠道code
+            FROM_CHANNEL_CODE: "fromChannelCode",
+            // 用户进入入口场景code
+            FROM_SCENE_CODE: "fromSceneCode"
         }
     };
 
@@ -80,24 +85,29 @@ export default (function () {
         },
 
         // 设置登录用户信息，会顺便设置全局用户信息
-        async setLoginUserInfo({ token, expiredTime = -1, referralCode = null, userId = null } = {}) {
+        async setLoginUserInfo({ accessToken, expiresIn = -1, refreshToken, tokenType, referralCode = null, userId = null } = {}) {
             let _login_user_info = localStorage.getSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.LOGIN_USER_INFO);
             let wxApp = null;
             if (getApp()) {
                 // 会存在一种情况，app刚刚开始初始化时getApp()返回的undefined,所以还是判断wxApp的
                 wxApp = getApp().getWxApp();
             }
-            if (expiredTime > 0) {
-                if (_login_user_info == null || typeof _login_user_info != "object") {
-                    _login_user_info = {};
+            if (expiresIn > 60) {
+                const expiredTime = new Date().getTime() + (expiresIn - 60) * 1000;
+                // 刷新token时间，如果当前的token有效期超过90%
+                let refreshTime;
+                if (refreshToken) {
+                    // 刷新token时间，如果当前的token有效期超过90%
+                    refreshTime = new Date().getTime() + expiresIn * 0.9 * 1000;
                 }
-                // 提前12个小时
-                expiredTime = new Date().getTime() + (expiredTime - 60 * 60 * 12) * 1000;
                 if (wxApp) {
                     wxApp.setData({
                         userInfo: {
                             userId,
-                            token,
+                            accessToken,
+                            refreshToken,
+                            tokenType,
+                            refreshTime,
                             expiredTime,
                             referralCode
                         }
@@ -109,7 +119,10 @@ export default (function () {
                         wxApp.setData({
                             userInfo: {
                                 userId,
-                                token,
+                                accessToken,
+                                refreshToken,
+                                tokenType,
+                                refreshTime,
                                 expiredTime,
                                 referralCode
                             }
@@ -119,9 +132,11 @@ export default (function () {
                 }
                 localStorage.setSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.LOGIN_USER_INFO, {
                     userId,
-                    token,
+                    accessToken,
+                    refreshToken,
+                    tokenType,
+                    refreshTime,
                     expiredTime,
-                    referralCode,
                     version: config.tokenVersion
                 });
             } else if (_login_user_info) {
@@ -130,7 +145,10 @@ export default (function () {
                     wxApp.setData({
                         userInfo: {
                             userId: null,
-                            token: null,
+                            accessToken: null,
+                            refreshToken: null,
+                            tokenType: null,
+                            refreshTime: null,
                             expiredTime: null,
                             referralCode: null
                         }
@@ -159,7 +177,10 @@ export default (function () {
                         wxApp.setData({
                             userInfo: {
                                 userId: null,
-                                token: null,
+                                accessToken: null,
+                                refreshToken: null,
+                                tokenType: null,
+                                refreshTime: null,
                                 expiredTime: null,
                                 referralCode: null
                             }
@@ -172,7 +193,7 @@ export default (function () {
 
         // 直接设置本地登录用户信息
         setLocalStorateLoginUserInfo(loginUserInfo) {
-            if (loginUserInfo && loginUserInfo.token) {
+            if (loginUserInfo && loginUserInfo.accessToken) {
                 loginUserInfo = Object.assign({ version: config.tokenVersion }, loginUserInfo);
             }
             return localStorage.setSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.LOGIN_USER_INFO, loginUserInfo);
@@ -187,6 +208,22 @@ export default (function () {
         // 设置别人分享过来的邀请码
         getShareReferralCode() {
             return localStorage.getSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.SHARE_REFERRAL_CODE) || "";
+        },
+        // 设置用户进入入口渠道code
+        setChannelCode(code) {
+            return localStorage.setSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.FROM_CHANNEL_CODE, code);
+        },
+        // 获取用户进入入口渠道code
+        getChannelCode() {
+            return localStorage.getSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.FROM_CHANNEL_CODE) || "";
+        },
+        // 设置用户进入入口场景code
+        setSceneCode(code) {
+            return localStorage.setSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.FROM_SCENE_CODE, code);
+        },
+        // 获取用户进入入口场景code
+        getSceneCode() {
+            return localStorage.getSiteLocalStorage(wxStorage.LOCAL_STORAGE_KEY.FROM_SCENE_CODE) || "";
         },
         // 设置设备ID
         setDeviceId(deviceId) {

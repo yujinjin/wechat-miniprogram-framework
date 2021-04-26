@@ -5,8 +5,8 @@
  */
 export default [
     {
-        path: "/pages/entrance/index",
-        name: "entrance",
+        path: "/pages/index/index",
+        name: "index",
         title: "入口页",
         authType: 0
     },

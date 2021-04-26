@@ -1,4 +1,7 @@
 <view class="auth-box">
-    <button wx:if="{{!isLogin}}" loading="{{isSumbiting}}" class="auth-button" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="authUserTap"></button>
+    <block wx:if="{{!isLogin}}">
+        <button wx:if="{{canIUseGetUserProfile}}" loading="{{isSumbiting}}" class="auth-button" bindtap="getUserProfileTap"></button>
+        <button wx:else loading="{{isSumbiting}}" class="auth-button" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="authUserTap"></button>
+    </block>
     <slot wx:else></slot>
 </view>
