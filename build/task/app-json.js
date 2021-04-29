@@ -38,10 +38,22 @@ module.exports = function (appJsonPath, routerPath, context, src) {
                         }
                         if (root) {
                             if (pagePath.startsWith(root + "/")) {
+                                // 子包就在当前目录下
                                 pagePath = pagePath.substr(root.length + 1);
                             } else if (fs.pathExistsSync(path.join(context, src + "/" + pagePath.substr(0, pagePath.lastIndexOf("/"))))) {
                                 // 如果需要迁移的目录文件还存在就去移动文件（不存在的原因可能是因为当前是watch模式）
-                                let pageDir = path.join(context, src + "/" + root + "/" + pagePath.substr(0, pagePath.lastIndexOf("/")));
+                                let newPagePath = pagePath;
+                                if (newPagePath.startsWith("pages/")) {
+                                    // 如果当前子目录是pages/开头，就去掉pages目录
+                                    newPagePath = newPagePath.substr("pages/".length);
+                                }
+                                // 如果当前页面的路径第一个目录和根目录最后一个目录重复，就会去掉，
+                                // 比如：pagePath: pages/others/contents/index, root: pages/subpackages/others
+                                // 最终生成的子包目录是：pages/subpackages/others/contents/index,去掉了中间的pages/others路径
+                                if (newPagePath.substr(0, newPagePath.indexOf("/")) === root.substr(root.lastIndexOf("/") + 1)) {
+                                    newPagePath = newPagePath.substr(newPagePath.indexOf("/") + 1);
+                                }
+                                let pageDir = path.join(context, src + "/" + root + "/" + newPagePath.substr(0, newPagePath.lastIndexOf("/")));
                                 if (!fs.pathExistsSync(pageDir)) {
                                     fs.mkdirsSync(pageDir);
                                 }
@@ -51,6 +63,7 @@ module.exports = function (appJsonPath, routerPath, context, src) {
                                     target: pageDir
                                 });
                                 console.info("迁移目录：" + path.join(context, src + "/" + pagePath.substr(0, pagePath.lastIndexOf("/"))) + " >>>  " + pageDir);
+                                return newPagePath;
                             }
                         }
                         return pagePath;

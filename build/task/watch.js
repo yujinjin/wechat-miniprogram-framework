@@ -16,11 +16,11 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
     // 当前是本地运行模式
     console.info("开始监控文件变化，热更新模式...");
     const filesChange = [];
-    const watcher = watch([`${gulpConfig.srcDir}/**/*`, `!${gulpConfig.srcDir}/**/*.less`], { delay: 500, queue: true, cwd: path.join(context) }, (callbackFun) => {
+    const watcher = watch([`${gulpConfig.srcDir}/**/*`], { delay: 500, queue: true, cwd: path.join(context) }, (callbackFun) => {
         if (filesChange.length > 0) {
             // 复制并清理当前数组
             const _files_change = filesChange.splice(0);
-            // 0:update-sys-config 1: task/image-min, 2: alias-replace 3:es-transform, 4:app-json 5:update-project-config 6: alias-replace 7: eslint
+            // 0:less 1:update-sys-config 2: task/image-min, 3: alias-replace 4:es-transform, 5:app-json 6:update-project-config 7: alias-replace 8: eslint
             const watcherTasks = [];
             _files_change.forEach((filteItem) => {
                 if (filteItem.stats == "unlink" || filteItem.stats == "unlinkDir") {
@@ -39,41 +39,57 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
                         }
                     }
                 } else if (filteItem.stats == "add" || filteItem.stats == "change") {
+                    if (/.less$/.test(filteItem.srcFilePath)) {
+                        // Less文件特殊处理
+                        if (!watcherTasks[0]) {
+                            watcherTasks[0] = [];
+                        }
+
+                        // 判断当前目录是否是已迁移的目录
+                        let destFilePath = filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"));
+                        const i = global.movePackageDirs.findIndex((item) => destFilePath == item.src);
+                        if (i != -1) {
+                            filteItem.destFilePath = global.movePackageDirs[i].target + filteItem.destFilePath.substr(filteItem.destFilePath.lastIndexOf("\\"));
+                            console.info("迁移目录改动: ====>" + filteItem.destFilePath);
+                        }
+                        watcherTasks[0].push(require("./less")(path.join(context, filteItem.srcFilePath), filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))));
+                        return;
+                    }
                     // 添加文件
                     fs.copySync(filteItem.srcFilePath, filteItem.destFilePath);
                     if (filteItem.destFilePath == configPath) {
                         // 系统配置文件有变化
-                        watcherTasks[0] = [require("./update-sys-config")(configPath, uploadConfigPath, options)];
-                        watcherTasks[5] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
+                        watcherTasks[1] = [require("./update-sys-config")(configPath, uploadConfigPath, options)];
+                        watcherTasks[6] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
                     } else if (configPath.substr(0, configPath.lastIndexOf("\\")) == filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))) {
                         // 其他环境变量的配置文件变化
-                        watcherTasks[5] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
+                        watcherTasks[6] = [require("./update-project-config")(projectConfigPath, esConfigPath)];
                     } else if (/.(png|jpg|jpeg|svg|gif|ico)$/.test(filteItem.destFilePath)) {
                         // 图片文件
-                        if (!watcherTasks[1]) {
-                            watcherTasks[1] = [];
+                        if (!watcherTasks[2]) {
+                            watcherTasks[2] = [];
                         }
-                        watcherTasks[1].push(require("./image-min")(filteItem.destFilePath, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))));
+                        watcherTasks[2].push(require("./image-min")(filteItem.destFilePath, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))));
                     } else if (filteItem.destFilePath == appJsonPath) {
-                        if (!watcherTasks[4]) {
+                        if (!watcherTasks[5]) {
                             // 重新生成路由app.json
-                            watcherTasks[4] = [require("./app-json")(appJsonPath, esRouterPath, context, target)];
+                            watcherTasks[5] = [require("./app-json")(appJsonPath, esRouterPath, context, target)];
                         }
                     } else {
                         if (filteItem.destFilePath.startsWith(path.join(context, `${target}/${gulpConfig.jsDir}/router`)) && /.js$/.test(filteItem.destFilePath)) {
                             // 如果当前JS的路由目录，
-                            if (!watcherTasks[2]) {
-                                watcherTasks[2] = [];
+                            if (!watcherTasks[3]) {
+                                watcherTasks[3] = [];
                             }
-                            watcherTasks[2].push(
+                            watcherTasks[3].push(
                                 require("./alias-replace")(filteItem.destFilePath, gulpConfig.aliasConfig, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\")))
                             );
-                            if (!watcherTasks[3]) {
-                                watcherTasks[3] = [require("./es-transform")(`${target}/${gulpConfig.jsDir}/**/*.js`, `${target}/tempjs`)];
-                            }
                             if (!watcherTasks[4]) {
+                                watcherTasks[4] = [require("./es-transform")(`${target}/${gulpConfig.jsDir}/**/*.js`, `${target}/tempjs`)];
+                            }
+                            if (!watcherTasks[5]) {
                                 // 重新生成路由app.json
-                                watcherTasks[4] = [require("./app-json")(appJsonPath, esRouterPath, context, target)];
+                                watcherTasks[5] = [require("./app-json")(appJsonPath, esRouterPath, context, target)];
                             }
                             return;
                         }
@@ -81,29 +97,33 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
                             // 判断当前目录是否是已迁移的目录
                             let destFilePath = filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"));
                             const i = global.movePackageDirs.findIndex((item) => destFilePath == item.src);
+                            console.info(">>>>>>>>>>>>>>" + i + "----" + destFilePath + "********" + JSON.stringify(global.movePackageDirs));
                             if (i != -1) {
+                                console.info("000000000");
                                 fs.copySync(destFilePath, global.movePackageDirs[i].target);
+                                console.info("111111");
                                 fs.removeSync(destFilePath);
+                                console.info("2222222");
                                 filteItem.destFilePath = global.movePackageDirs[i].target + filteItem.destFilePath.substr(filteItem.destFilePath.lastIndexOf("\\"));
                                 console.info("迁移目录改动: ====>" + filteItem.destFilePath);
                             }
                             if (/.(js|wxml|txt)$/.test(filteItem.destFilePath)) {
-                                if (!watcherTasks[6]) {
-                                    watcherTasks[6] = [];
+                                if (!watcherTasks[7]) {
+                                    watcherTasks[7] = [];
                                 }
                                 // 路径别名替换
-                                watcherTasks[6].push(
+                                watcherTasks[7].push(
                                     require("./alias-replace")(filteItem.destFilePath, gulpConfig.aliasConfig, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\")))
                                 );
                             }
                         }
                     }
                     if (/.js$/.test(filteItem.destFilePath)) {
-                        if (!watcherTasks[3] && filteItem.destFilePath.startsWith(path.join(context, `${target}/${gulpConfig.jsDir}/`))) {
-                            watcherTasks[3] = [require("./es-transform")(`${target}/${gulpConfig.jsDir}/**/*.js`, `${target}/tempjs`)];
+                        if (!watcherTasks[4] && filteItem.destFilePath.startsWith(path.join(context, `${target}/${gulpConfig.jsDir}/`))) {
+                            watcherTasks[4] = [require("./es-transform")(`${target}/${gulpConfig.jsDir}/**/*.js`, `${target}/tempjs`)];
                         }
-                        if (!watcherTasks[7]) {
-                            watcherTasks[7] = [require("./eslint")([`${target}/**/*.js`, `!${target}/tempjs/**/*.js`].concat(excludes), target)];
+                        if (!watcherTasks[8]) {
+                            watcherTasks[8] = [require("./eslint")([`${target}/**/*.js`, `!${target}/tempjs/**/*.js`].concat(excludes), target)];
                         }
                     }
                 }
@@ -127,11 +147,17 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
         callbackFun();
     });
     watcher.on("all", function (stats, filePath) {
-        console.log(`File ${filePath} was ${stats}`);
+        let destFilePath = path.join(context, gulpConfig.compileDir, filePath.substr(gulpConfig.srcDir.length + 1));
+        if (/.less$/.test(filePath)) {
+            // Less文件特殊处理
+            // 变成.wxss
+            destFilePath = destFilePath.substr(0, destFilePath.length - 4) + "wxss";
+        }
+        console.log(`File ${filePath} was ${stats}, target File ${destFilePath}`);
         filesChange.push({
             stats,
             srcFilePath: filePath,
-            destFilePath: path.join(context, gulpConfig.compileDir, filePath.substr(gulpConfig.srcDir.length + 1))
+            destFilePath
         });
     });
 };

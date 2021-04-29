@@ -64,6 +64,7 @@ const tasks = [
     require("./task/clear")(path.join(context, target)),
     require("./task/copy")([`${gulpConfig.srcDir}/**/*`, `!${gulpConfig.srcDir}/**/*.less`], target),
     require("./task/copy")(path.join(context, "upload.config.json"), target),
+    require("./task/less")(`${gulpConfig.srcDir}/**/*.less`, target),
     require("./task/update-sys-config")(configPath, uploadConfigPath, options),
     require("./task/image-min")(`${target}/**/*.{png,jpg,jpeg,svg,gif,ico}`, target),
     require("./task/alias-replace")([`${target}/${gulpConfig.jsDir}/**/*.{js,txt}`], gulpConfig.aliasConfig, `${target}/${gulpConfig.jsDir}`),

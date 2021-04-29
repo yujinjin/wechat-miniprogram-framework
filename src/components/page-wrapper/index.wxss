@@ -1,1 +1,0 @@
-.page-wrapper{height:100%;width:100%;flex:1 1 100%;display:flex;overflow-x:hidden;flex-direction:column}.page-wrapper .page-contents{flex:1 1 auto}
