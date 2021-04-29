@@ -12,7 +12,12 @@
         "selectedColor": "#00CC75",
         "list": []
     },
-    "usingComponents": {},
+    "usingComponents": {
+        "page-wrapper": "/components/page-wrapper/index",
+        "date-format": "/components/date-format/index",
+        "img-format": "/components/img-format/index",
+        "number-format": "/components/number-format/index"
+    },
     "subpackages": [
         {
             "root": "pages/subpackages/others",

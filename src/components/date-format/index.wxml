@@ -1,0 +1,1 @@
+<text selectable="{{selectable}}" class="date-time-text">{{formatValue}}</text>

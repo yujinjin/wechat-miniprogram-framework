@@ -28,20 +28,80 @@
 -   4.PRD 环境下项目构建发体验版 B_PRD(Building Production)
 -   5.PRD 环境下项目构建提审 BC_PRD(Building and Censorship For Production)
 
-## 小程序上传配置说明
+## 小程序自动化脚本配置
 
+配置文件: gulp.config.js
 ```json
-// upload.config.json
 {
-    "project": "MyProject", // 项目名，用于后台设置的账号密码匹配
-    "type": 1, // 发布类型（默认0：上传完成不做任何操作；1：仅设置体验版；2：仅送审；3：设置体验版并送审）
-    "list": [
-        {
-            "version": "0.0.1", // 本次发布的版本号，如果与上个版本号一样会自动加1
-            "uploadDesc": "上传备注信息",
-            "publishDesc": "送审备注信息", // 送审时（type为2或3）此条为必填项
-            "author": "jackyu" // 发布版本作者
-        }
-    ] // 历史版本列表, 最新的版本索引位置为0
+    // 打包编译后的根目录名
+    compileDir: "dist",
+    // 源码目录
+    srcDir: "src",
+    // JS目录,目前用于获取JS目录下的路由配置来改变app.json的
+    jsDir: "js",
+    // 包管理目录
+    npmDir: ["miniprogram_npm", "node_modules"],
+    // 引用路径别名配置
+    aliasConfig: {
+        "@js": "/js",
+        "@components": "/components",
+        "@pages": "/pages",
+        "@imgs": "/imgs"
+    }
 }
 ```
+
+## 小程序上传配置说明
+
+配置文件: upload.config.json
+
+```json
+{
+    "project": "XCX.HealthConstitution", // 项目名
+    "appid": "", // 小程序的appid,项目根据编译命令，找到环境配置文件的appid自动化生成
+    "type": "miniProgram", // 项目的类型，有效值 miniProgram/miniProgramPlugin/miniGame/miniGamePlugin
+    "projectPath": "", // 小程序项目的工程化目录路径,项目根据编译命令，找到环境配置文件的appid自动化生成
+    "privateKeyPath": "", // 小程序项目的工程化目录路径,项目自动化生成
+    "packageJsonPath": "", // 小程序CI key目录路径,项目自动化生成
+    "miniprogramNpmDistDir": "", // 小程序被构建 miniprogram_npm 的目标位置目标位置，项目根据project.config.json里自动配置
+    "ignores": [
+        "node_modules/**/*",
+        "dist/node_modules/**/**",
+        "src/**/**",
+        "key/**/**",
+        "build/**/**",
+        "dist/tempjs/**/**",
+        "dist/upload.config.json"
+    ], // 忽略文件
+    "setting": {
+        "UAT": {
+            "es6": true,
+            "es7": true,
+            "minifyJS": false,
+            "minifyWXML": false,
+            "minifyWXSS": false,
+            "minify": false,
+            "codeProtect": false,
+            "autoPrefixWXSS": true
+        }, // UAT环境编译设置
+        "PRD": {
+            "es6": true,
+            "es7": true,
+            "minifyJS": true,
+            "minifyWXML": true,
+            "minifyWXSS": true,
+            "minify": true,
+            "codeProtect": false,
+            "autoPrefixWXSS": true
+        } // PRD环境编译设置
+    },
+    "list": [
+        {
+            "version": "0.0.1", // 小程序版本号
+            "desc": "中医体质小程序1.0开发", // 小程序发布项目备注
+            "author": "jackyu" // 小程序的发布人
+        }
+    ] // 小程序所有的上传历史版本记录，最新的排在第一位。
+}
+```
+
