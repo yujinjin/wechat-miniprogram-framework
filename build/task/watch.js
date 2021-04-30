@@ -97,26 +97,20 @@ module.exports = function ({ gulpConfig, configPath, esConfigPath, options, excl
                             // 判断当前目录是否是已迁移的目录
                             let destFilePath = filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"));
                             const i = global.movePackageDirs.findIndex((item) => destFilePath == item.src);
-                            console.info(">>>>>>>>>>>>>>" + i + "----" + destFilePath + "********" + JSON.stringify(global.movePackageDirs));
                             if (i != -1) {
-                                console.info("000000000");
                                 fs.copySync(destFilePath, global.movePackageDirs[i].target);
-                                console.info("111111");
                                 fs.removeSync(destFilePath);
-                                console.info("2222222");
                                 filteItem.destFilePath = global.movePackageDirs[i].target + filteItem.destFilePath.substr(filteItem.destFilePath.lastIndexOf("\\"));
                                 console.info("迁移目录改动: ====>" + filteItem.destFilePath);
                             }
-                            if (/.(js|wxml|txt)$/.test(filteItem.destFilePath)) {
-                                if (!watcherTasks[7]) {
-                                    watcherTasks[7] = [];
-                                }
-                                // 路径别名替换
-                                watcherTasks[7].push(
-                                    require("./alias-replace")(filteItem.destFilePath, gulpConfig.aliasConfig, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\")))
-                                );
-                            }
                         }
+                    }
+                    if (/.(js|wxml|txt)$/.test(filteItem.destFilePath)) {
+                        if (!watcherTasks[7]) {
+                            watcherTasks[7] = [];
+                        }
+                        // 路径别名替换
+                        watcherTasks[7].push(require("./alias-replace")(filteItem.destFilePath, gulpConfig.aliasConfig, filteItem.destFilePath.substr(0, filteItem.destFilePath.lastIndexOf("\\"))));
                     }
                     if (/.js$/.test(filteItem.destFilePath)) {
                         if (!watcherTasks[4] && filteItem.destFilePath.startsWith(path.join(context, `${target}/${gulpConfig.jsDir}/`))) {
